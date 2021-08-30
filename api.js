@@ -10,6 +10,7 @@ const displayData = data =>{
 }
 
 
+
 // 2nd part .........
 const buddyData = () => {
     fetch('https://randomuser.me/api/?results=5')
@@ -39,14 +40,37 @@ const getCountries= countriesData =>{
    countriesData.forEach(country =>{
      const newDiv = document.createElement('div');
      newDiv.classList.add('countryDiv')
-     const h2 = document.createElement('h2');
-     h2.innerText = country.name;
-     newDiv.appendChild(h2);
-     const b = document.createElement('b');
-     b.innerText= country.capital;
-     newDiv.appendChild(b);
+     newDiv.innerHTML = `
+            <h2>${country.name}</h2>
+            <p>${country.capital}</p>
+            <button onclick="loadCountry('${country.name}')">Details</button>
+     `
+    //  const h2 = document.createElement('h2');
+    //  h2.innerText = country.name;
+    //  newDiv.appendChild(h2);
+    //  const b = document.createElement('b');
+    //  b.innerText= country.capital;
+    //  newDiv.appendChild(b);
      countryDiv.appendChild(newDiv);
    })
+}
+const loadCountry = name =>{
+    const url = `https://restcountries.eu/rest/v2/name/${name}`
+    fetch(url)
+    .then(res => res.json())
+    .then(data => displayCountryDetail(data))
+}
+
+const displayCountryDetail = country =>{
+    console.log(country)
+    const counDiv = document.getElementById('countryId');
+    counDiv.innerHTML = `
+    <h5>${country.name}</h5>
+    <p> population : ${country.population}</p>
+    <img width ="150px" src="${country.flag}">
+    
+    `
+
 }
 
 
